@@ -11,12 +11,16 @@ namespace IdentityServer
     // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
     public void ConfigureServices(IServiceCollection services)
     {
+
+      services.AddMvc();
+
       // Register Identity Server to DI.
       // Also adds an in-memory store for runtime state.
       services.AddIdentityServer()
         //.AddInMemoryClients()
         // Creates a temporary key material for development
         .AddDeveloperSigningCredential()
+        .AddInMemoryIdentityResources(Config.GetIdentityResources())
         .AddInMemoryApiResources(Config.GetApiResources())
         .AddInMemoryClients(Config.GetClients())
         .AddTestUsers(Config.GetUsers());
@@ -33,10 +37,9 @@ namespace IdentityServer
       // Add identity server middleware to HTTP pipeline
       app.UseIdentityServer();
 
-      app.Run(async (context) =>
-      {
-        await context.Response.WriteAsync("Hello World!");
-      });
+      app.UseStaticFiles();
+      app.UseMvcWithDefaultRoute();
+      
     }
   }
 }
