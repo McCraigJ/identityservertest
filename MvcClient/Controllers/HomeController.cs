@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MvcClient.Models;
@@ -29,6 +30,12 @@ namespace MvcClient.Controllers
       ViewData["Message"] = "Your contact page.";
 
       return View();
+    }
+
+    public async Task Logout()
+    {
+      await HttpContext.SignOutAsync("Cookies");
+      await HttpContext.SignOutAsync("oidc");
     }
 
     public IActionResult Error()
