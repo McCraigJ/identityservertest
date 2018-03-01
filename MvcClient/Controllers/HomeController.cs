@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 using MvcClient.Models;
+using System.Diagnostics;
+using IdentityModel.Client;
+//using IdentityModel
 
 namespace MvcClient.Controllers
 {
@@ -41,6 +42,31 @@ namespace MvcClient.Controllers
     public IActionResult Error()
     {
       return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    public async Task<IActionResult> CallApiUsingClientCredentials()
+    {
+      var tokenClient = new TokenClient("http://localhost:5000/connect/token", "mvc", "secret");
+      var tokenResponse = await tokenClient.RequestClientCredentialsAsync("api1");
+
+      var client = new HttpClient();
+      client.SetBearerToken(tokenResponse.AccessToken);
+      var content = await client.GetStringAsync("http://localhost:5001/identity");
+
+      ViewBag.Json = JArray.Parse(content).ToString();      
+      return View("About");
+    }
+
+    public async Task<IActionResult> CallApiUsingUserAccessToken()
+    {
+      var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+      var client = new HttpClient();
+      client.SetBearerToken(accessToken);
+      var content = await client.GetStringAsync("http://localhost:5001/identity");
+
+      ViewBag.Json = JArray.Parse(content).ToString();
+      return View("About");
     }
   }
 }
