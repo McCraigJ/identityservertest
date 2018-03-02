@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using IdentityServer4.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,17 +19,20 @@ namespace Test.IdentityServer.Controllers
   {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly IIdentityServerInteractionService _interaction;
     private readonly IEmailSender _emailSender;
     private readonly ILogger _logger;
 
     public AccountController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
+        IIdentityServerInteractionService interaction,
         IEmailSender emailSender,
         ILogger<AccountController> logger)
     {
       _userManager = userManager;
       _signInManager = signInManager;
+      _interaction = interaction;
       _emailSender = emailSender;
       _logger = logger;
     }
@@ -125,6 +129,26 @@ namespace Test.IdentityServer.Controllers
 
       // If we got this far, something failed, redisplay form
       return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Logout(string logoutId)
+    {      
+      await _signInManager.SignOutAsync();
+      _logger.LogInformation("User logged out.");
+
+      var logout = await _interaction.GetLogoutContextAsync(logoutId);
+
+      var vm = new LoggedOutViewModel
+      {
+        AutomaticRedirectAfterSignOut = AccountOptions.AutomaticRedirectAfterSignOut,
+        PostLogoutRedirectUri = logout?.PostLogoutRedirectUri,
+        ClientName = string.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout?.ClientName,
+        SignOutIframeUrl = logout?.SignOutIFrameUrl,
+        LogoutId = logoutId
+      };
+
+      return View("LoggedOut", vm);      
     }
 
     [HttpPost]
