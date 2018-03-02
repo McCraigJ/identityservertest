@@ -36,9 +36,9 @@
           <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
           @if (User.Identity.IsAuthenticated)
           {                        
-            <li>
-              <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @ClaimHelper.GetUserName(User.Claims)!</a>
-            </li>
+          <li>
+            <a href="http://localhost:5000/Manage/Index" title="Manage">Hello @ClaimHelper.GetUserName(User.Claims)!</a>            
+          </li>
             <li><a asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
           }
         </ul>

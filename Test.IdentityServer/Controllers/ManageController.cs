@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +23,7 @@ namespace Test.IdentityServer.Controllers
   {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly IIdentityServerInteractionService _interaction;
     private readonly IEmailSender _emailSender;
     private readonly ILogger _logger;
     private readonly UrlEncoder _urlEncoder;
@@ -34,13 +36,15 @@ namespace Test.IdentityServer.Controllers
       SignInManager<ApplicationUser> signInManager,
       IEmailSender emailSender,
       ILogger<ManageController> logger,
-      UrlEncoder urlEncoder)
+      UrlEncoder urlEncoder,
+      IIdentityServerInteractionService interaction)
     {
       _userManager = userManager;
       _signInManager = signInManager;
       _emailSender = emailSender;
       _logger = logger;
       _urlEncoder = urlEncoder;
+      _interaction = interaction;
     }
 
     [TempData]
@@ -49,6 +53,8 @@ namespace Test.IdentityServer.Controllers
     [HttpGet]
     public async Task<IActionResult> Index()
     {
+      var context =_interaction.GetAuthorizationContextAsync("");
+
       var user = await _userManager.GetUserAsync(User);
       if (user == null)
       {
