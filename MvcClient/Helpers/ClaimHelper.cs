@@ -10,10 +10,21 @@ namespace MvcClient.Helpers
   public static class ClaimHelper
   {
     private const string ClaimTypeName = "name";
+    private const string ClaimTypeRole = "role";
 
     public static string GetUserName(IEnumerable<Claim> claims)
     {
-      return claims.FirstOrDefault(x => x.Type == ClaimTypeName)?.Value;      
+      return claims.FirstOrDefault(x => x.Type == ClaimTypeName)?.Value;
+    }
+
+    public static string GetClaimValue(IEnumerable<Claim> claims, string claimType)
+    {
+      return claims.FirstOrDefault(x => x.Type == claimType)?.Value;
+    }
+
+    public static bool IsSystemAdmin(IEnumerable<Claim> claims)
+    {
+      return claims.FirstOrDefault(x => x.Type == ClaimTypeRole)?.Value == "SystemAdmin";
     }
   }
 }

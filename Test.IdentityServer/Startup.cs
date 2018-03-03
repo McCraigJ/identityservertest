@@ -12,6 +12,7 @@ using Test.IdentityServer.Data;
 using Test.IdentityServer.Models;
 using Test.IdentityServer.Services;
 using IdentityServer4;
+using IdentityServer4.Services;
 
 namespace Test.IdentityServer
 {
@@ -38,7 +39,7 @@ namespace Test.IdentityServer
       services.AddTransient<IEmailSender, EmailSender>();
 
       services.AddMvc();
-      
+
       // configure identity server with in-memory stores, keys, clients and scopes
       services.AddIdentityServer()
           .AddDeveloperSigningCredential()
@@ -47,6 +48,9 @@ namespace Test.IdentityServer
           .AddInMemoryApiResources(Config.GetApiResources())
           .AddInMemoryClients(Config.GetClients())
           .AddAspNetIdentity<ApplicationUser>();
+      //.AddProfileService<ProfileService>();
+
+      services.AddTransient<IProfileService, ProfileService>();
 
       //services.AddAuthentication()
       //  .AddGoogle("Google", options =>

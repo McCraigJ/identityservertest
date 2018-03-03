@@ -67,24 +67,30 @@ namespace Test.IdentityServer
           {
             IdentityServerConstants.StandardScopes.OpenId,
             IdentityServerConstants.StandardScopes.Profile,
-            "api1"
+            "custom.profile", 
+            "api1",
+            
           },
-          AllowOfflineAccess = true
+          AllowOfflineAccess = true,
+          AlwaysIncludeUserClaimsInIdToken = true
         }
       };
-    }
+    }    
+
     public static IEnumerable<IdentityResource> GetIdentityResources()
     {
 
-      //var customProfile = new IdentityResource(
-      //  name: "custom.profile",
-      //  displayName: "Custom profile",
-      //  claimTypes: new[] { "name", "email", "status" });
+      var customProfile = new IdentityResource(
+        name: "custom.profile",
+        displayName: "Custom profile",
+        claimTypes: new[] { "name", "role" });
 
       return new List<IdentityResource>
       {
         new IdentityResources.OpenId(),
-        new IdentityResources.Profile()
+        new IdentityResources.Profile(),
+        //new IdentityResources.Address()
+        customProfile
       };
     }
   }

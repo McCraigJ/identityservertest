@@ -1,0 +1,26 @@
+﻿
+@model Test.IdentityServer.Models.UsersViewModels.UsersVM
+
+@{
+  ViewData["Title"] = "Users";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@foreach (var u in Model.Users)
+{
+<div class="row">
+  <div class="col-md-3">
+    <a asp-area="" asp-controller="Users" asp-action="Update" asp-route-id="@u.Id">Update Role</a>
+  </div>
+  <div class="col-md-3">
+    @u.Email
+  </div>
+  <div class="col-md-3">
+    @u.UserName
+  </div>
+  <div class="col-md-3">
+    @u.Role
+  </div>
+</div>
+}

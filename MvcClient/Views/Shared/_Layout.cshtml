@@ -35,11 +35,15 @@
           <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
           <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
           @if (User.Identity.IsAuthenticated)
-          {                        
-          <li>
-            <a href="http://localhost:5000/Manage/Index" title="Manage">Hello @ClaimHelper.GetUserName(User.Claims)!</a>            
-          </li>
+          {
+            <li>
+              <a href="http://localhost:5000/Manage/Index" title="Manage">Hello @ClaimHelper.GetUserName(User.Claims)!</a>
+            </li>
             <li><a asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
+            @if (ClaimHelper.IsSystemAdmin(User.Claims))
+            {              
+              <li><a href="http://localhost:5000/Users/Index" title="Manage Users">Manage Users</a></li>
+            }
           }
         </ul>
       </div>

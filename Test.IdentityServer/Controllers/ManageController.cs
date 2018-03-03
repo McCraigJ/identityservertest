@@ -67,7 +67,8 @@ namespace Test.IdentityServer.Controllers
         Email = user.Email,
         PhoneNumber = user.PhoneNumber,
         IsEmailConfirmed = user.EmailConfirmed,
-        StatusMessage = StatusMessage
+        StatusMessage = StatusMessage,
+        MemorableWord = user.MemorableWord
       };
 
       return View(model);
@@ -88,24 +89,14 @@ namespace Test.IdentityServer.Controllers
         throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
       }
 
-      var email = user.Email;
-      if (model.Email != email)
-      {
-        var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
-        if (!setEmailResult.Succeeded)
-        {
-          throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
-        }
-      }
+      user.Email = model.Email;
+      user.PhoneNumber = model.PhoneNumber;
+      user.MemorableWord = model.MemorableWord;
 
-      var phoneNumber = user.PhoneNumber;
-      if (model.PhoneNumber != phoneNumber)
+      var updateResult = await _userManager.UpdateAsync(user);
+      if (!updateResult.Succeeded)
       {
-        var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
-        if (!setPhoneResult.Succeeded)
-        {
-          throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
-        }
+        throw new ApplicationException(@"Unexpected error occurred updating user");
       }
 
       StatusMessage = "Your profile has been updated";

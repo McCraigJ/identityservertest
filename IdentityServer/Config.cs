@@ -68,7 +68,8 @@ namespace IdentityServer
             IdentityServerConstants.StandardScopes.Profile,
             "api1"
           },
-          AllowOfflineAccess = true
+          AllowOfflineAccess = true,
+          AlwaysIncludeUserClaimsInIdToken = true
         }
       };
     }
@@ -96,7 +97,7 @@ namespace IdentityServer
       return new List<IdentityResource>
       {
           new IdentityResources.OpenId(),
-          new IdentityResources.Profile(),
+          new IdentityResources.Profile()          
       };
     }
   }

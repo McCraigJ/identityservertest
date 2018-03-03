@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -30,6 +31,6 @@ namespace Test.IdentityServer.Models.AccountViewModels
 
     [StringLength(15, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 0)]
     [Display(Name = "Memorable Word")]
-    public string MemorableWord { get; set; }
+    public string MemorableWord { get; set; }    
   }
 }

@@ -10,5 +10,6 @@ namespace Test.IdentityServer.Models
   public class ApplicationUser : IdentityUser
   {
     public string MemorableWord { get; set; }
+    public string Role { get; set; }
   }
 }

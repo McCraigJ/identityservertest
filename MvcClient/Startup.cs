@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,6 +25,9 @@ namespace MvcClient
     {
       services.AddMvc();
 
+      //var connection = Configuration.GetConnectionString("DefaultConnection");
+      //services.AddDbContext<PermissionsContext>(options => options.UseSqlServer(connection));
+
       JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
       services.AddAuthentication(options =>
@@ -42,6 +46,7 @@ namespace MvcClient
         options.ResponseType = "code id_token";
         options.SaveTokens = true;
         options.GetClaimsFromUserInfoEndpoint = true;
+        options.Scope.Add("custom.profile");
         //options.Scope.Add("api1");
         //options.Scope.Add("offline_access");
       });
