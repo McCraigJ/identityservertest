@@ -114,7 +114,7 @@ namespace Test.IdentityServer.Controllers
       ViewData["ReturnUrl"] = returnUrl;
       if (ModelState.IsValid)
       {
-        var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber, MemorableWord = model.MemorableWord };
+        var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber, MemorableWord = model.MemorableWord, FirstName = model.FirstName, LastName = model.LastName  };
         var result = await _userManager.CreateAsync(user, model.Password);
         if (result.Succeeded)
         {

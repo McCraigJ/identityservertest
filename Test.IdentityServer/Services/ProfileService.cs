@@ -28,6 +28,7 @@ namespace Test.IdentityServer.Services
       {
           new Claim("name", user.UserName),
           new Claim("role", user.Role ?? ""),
+          new Claim("firstname", user.FirstName ?? "")
       };
 
       context.IssuedClaims.AddRange(claims);

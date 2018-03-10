@@ -73,6 +73,34 @@ namespace Test.IdentityServer
           },
           AllowOfflineAccess = true,
           AlwaysIncludeUserClaimsInIdToken = true
+        },
+        new Client
+        {
+          ClientId = "chatmvc",
+          ClientName = "Company Chat",
+          AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+          RequireConsent = false,
+          ClientSecrets =
+          {
+            new Secret("goating".Sha256())
+          },
+
+          // where to redirect to after login
+          RedirectUris = { "http://localhost:5999/signin-oidc" },
+
+          // where to redirect to after logout
+          PostLogoutRedirectUris = { "http://localhost:5999/signout-callback-oidc" },
+
+          AllowedScopes = new List<string>
+          {
+            IdentityServerConstants.StandardScopes.OpenId,
+            IdentityServerConstants.StandardScopes.Profile,
+            "custom.profile",
+            "api1",
+
+          },
+          AllowOfflineAccess = true,
+          AlwaysIncludeUserClaimsInIdToken = true
         }
       };
     }    
@@ -83,7 +111,7 @@ namespace Test.IdentityServer
       var customProfile = new IdentityResource(
         name: "custom.profile",
         displayName: "Custom profile",
-        claimTypes: new[] { "name", "role" });
+        claimTypes: new[] { "name", "role", "firstname" });
 
       return new List<IdentityResource>
       {

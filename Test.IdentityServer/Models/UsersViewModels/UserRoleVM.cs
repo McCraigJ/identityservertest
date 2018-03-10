@@ -13,6 +13,9 @@ namespace Test.IdentityServer.Models.UsersViewModels
 
     public string Role { get; set; }
 
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+
     public List<SelectListItem> RolesList { get; set; }
   }
 }

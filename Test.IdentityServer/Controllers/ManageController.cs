@@ -68,7 +68,10 @@ namespace Test.IdentityServer.Controllers
         PhoneNumber = user.PhoneNumber,
         IsEmailConfirmed = user.EmailConfirmed,
         StatusMessage = StatusMessage,
-        MemorableWord = user.MemorableWord
+        MemorableWord = user.MemorableWord,
+        FirstName = user.FirstName,
+        LastName = user.LastName
+        
       };
 
       return View(model);
@@ -92,6 +95,8 @@ namespace Test.IdentityServer.Controllers
       user.Email = model.Email;
       user.PhoneNumber = model.PhoneNumber;
       user.MemorableWord = model.MemorableWord;
+      user.FirstName = model.FirstName;
+      user.LastName = model.LastName;
 
       var updateResult = await _userManager.UpdateAsync(user);
       if (!updateResult.Succeeded)

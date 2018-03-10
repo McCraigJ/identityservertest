@@ -1,0 +1,48 @@
+﻿@using CompanyChat.Helpers
+@using CompanyChat.Models.ViewModels
+
+@model HomeViewModel
+@{
+  ViewData["Title"] = "Speak Up!";
+}
+
+<h1 id="main-chat-title" class="main-chat-title"></h1>
+
+@if (User.Identity.IsAuthenticated)
+{
+  <p>Hello @ClaimHelper.GetFirstName(User.Claims)!</p>
+
+  @*<dl>
+      @foreach (var claim in User.Claims)
+      {
+        <dt>@claim.Type</dt>
+        <dd>@claim.Value</dd>
+      }
+    </dl>*@
+
+}
+
+
+<div class="groups">
+  <h2>Groups</h2>
+  <ul class="groups-list">
+
+    @foreach (var g in Model.Groups)
+    {
+      <li><a data-group-name="@g.Name" href="#">@g.Name</a></li>
+    }
+  </ul>
+</div>
+
+<div class="main-contianer shadow">
+  <div id="chat-scroll" class="main-chat-container">
+    <div id="chatGroup"></div>
+    <div id="chat-window" class="chat-window"></div>
+  </div>
+  <hr style="margin: 15px;" />
+  <div class="message-sender-container">
+    <div class="form-group"><textarea type="text" rows="2" id="message-box" class="message-box form-control" placeholder="Type stuff here! :)"></textarea></div>
+  </div>
+</div>
+
+

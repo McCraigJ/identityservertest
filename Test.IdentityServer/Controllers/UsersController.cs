@@ -28,13 +28,15 @@ namespace Test.IdentityServer.Controllers
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-      var users = _context.Users.Select(x => new UserSM
+      var users = await _context.Users.Select(x => new UserSM
       {
         Id = x.Id,
         Email = x.Email,
         Role = x.Role,
-        UserName = x.UserName
-      }).ToList();
+        UserName = x.UserName,
+        FirstName = x.FirstName,
+        LastName = x.LastName
+      }).ToListAsync();
       return View(new UsersVM { Users = users });
     }
 
@@ -48,7 +50,9 @@ namespace Test.IdentityServer.Controllers
         Id = applicationUser.Id,
         Email = applicationUser.Email,
         Role = applicationUser.Role,
-        UserName = applicationUser.UserName
+        UserName = applicationUser.UserName,
+        FirstName = applicationUser.FirstName,
+        LastName = applicationUser.LastName
       };
 
       UserRoleVM model = new UserRoleVM { User = user };
@@ -61,13 +65,16 @@ namespace Test.IdentityServer.Controllers
     {
       if (ModelState.IsValid)
       {
-        if (User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value == model.User.Id)
+
+        var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == model.User.Id);
+
+        if (User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value != model.User.Id)
         {
-          ModelState.AddModelError("Role", "Cannot update your own role");
-        } else
-        {
-          var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == model.User.Id);
           applicationUser.Role = model.Role;
+        } else
+        {         
+          applicationUser.FirstName = model.FirstName;
+          applicationUser.LastName = model.LastName;
           await _context.SaveChangesAsync();
           return RedirectToAction("Index");
         }
