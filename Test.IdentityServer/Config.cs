@@ -67,9 +67,9 @@ namespace Test.IdentityServer
           {
             IdentityServerConstants.StandardScopes.OpenId,
             IdentityServerConstants.StandardScopes.Profile,
-            "custom.profile", 
+            "custom.profile",
             "api1",
-            
+
           },
           AllowOfflineAccess = true,
           AlwaysIncludeUserClaimsInIdToken = true
@@ -101,9 +101,29 @@ namespace Test.IdentityServer
           },
           AllowOfflineAccess = true,
           AlwaysIncludeUserClaimsInIdToken = true
+        },
+        // JavaScript Client
+        new Client
+        {
+            ClientId = "js",
+            ClientName = "JavaScript Client",
+            AllowedGrantTypes = GrantTypes.Implicit,
+            RequireConsent = false,
+            AllowAccessTokensViaBrowser = true,
+
+            RedirectUris =           { "http://localhost:5003/callback.html" },
+            PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
+            AllowedCorsOrigins =     { "http://localhost:5003" },
+
+            AllowedScopes =
+            {
+                IdentityServerConstants.StandardScopes.OpenId,
+                IdentityServerConstants.StandardScopes.Profile,
+                "api1"
+            }
         }
       };
-    }    
+    }
 
     public static IEnumerable<IdentityResource> GetIdentityResources()
     {
