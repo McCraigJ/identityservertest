@@ -1,6 +1,10 @@
-# identityservertest
+# Identity Server Test Project
 
-IdentityServer project handles authentication
-API project 
-Client uses API
-MvcClient uses IdentityServer to authenticate Users or External users via Google APIs
+## Projects:
+
+* API: http://localhost:5001/
+* Client: Console application to consume API
+* Company Chat: http://localhost:5999/
+* Javascipt Client: http://localhost:5003/ Test implicit flow from js client
+* MvcClient: http://localhost:5002/ Test HybridAndClientCredentials flow from mvc client
+
